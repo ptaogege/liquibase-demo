@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="1" author="penguin">
+        <insert tableName="distributor">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="Pan"/>
+        </insert>
+        <insert tableName="distributor">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="Soft"/>
+        </insert>
+    </changeSet>
+    <changeSet id="2" author="penguin">
+        <insert tableName="distributor">
+            <column name="id" valueNumeric="5"/>
+            <column name="name" value="niu"/>
+            <column name="tel" value="998998"/>
+        </insert>
+    </changeSet>
+    <changeSet id="changeRollback" author="nvoxland" context="test">
+        <createTable tableName="changeRollback1">
+            <column name="id" type="int"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="changeRollback1"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="roll" author="penguin">
+        <insert tableName="distributor">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="zhangsan"/>
+            <column name="tel" value="123123"/>
+        </insert>
+        <rollback>
+            DELETE FROM distributor WHERE id=1
+        </rollback>
+    </changeSet>
+    <changeSet id="roll2" author="penguin">
+        <insert tableName="distributor">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="zhangsan"/>
+            <column name="tel" value="666666"/>
+        </insert>
+        <rollback>
+            DELETE FROM distributor WHERE id=2
+        </rollback>
+    </changeSet>
+    <changeSet id="roll3" author="penguin">
+        <insert tableName="distributor">
+            <column name="id" valueNumeric="6"/>
+            <column name="name" value="lisi"/>
+            <column name="tel" value="23456"/>
+        </insert>
+        <rollback>
+            DELETE FROM distributor WHERE id=6
+        </rollback>
+    </changeSet>
+    <changeSet id="roll5" author="penguin">
+        <insert tableName="changeRollback1">
+            <column name="id" value="16"/>
+        </insert>
+        <insert tableName="changeRollback1">
+            <column name="id" value="20"/>
+        </insert>
+        <rollback>
+            delete from changeRollback1 where id=16
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

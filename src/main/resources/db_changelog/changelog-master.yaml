@@ -1,0 +1,4 @@
+databaseChangeLog:
+
+  - include:
+      file: db_changelog/liquibase.mysql/changelog-202109-dml.xml

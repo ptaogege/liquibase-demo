@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="1" author="penguin">
+        <createTable tableName="distributor">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="active" type="boolean" defaultValue="1"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="tao">
+        <dropColumn tableName="distributor" columnName="active"/>
+    </changeSet>
+    <changeSet id="2" author="peng">
+        <addColumn tableName="distributor">
+            <column name="tel"  type="varchar(255)" encoding="utf8" remarks="电话"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

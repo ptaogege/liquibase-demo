@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/liquibase?serverTimezone=UTC
+    username: root
+    password: root
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db_changelog/changelog-master.yaml
+
