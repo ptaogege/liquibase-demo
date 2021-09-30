@@ -15,6 +15,7 @@
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>1.8</java.version>
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
     </properties>
     <dependencies>
         <dependency>
@@ -40,6 +41,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.10.11</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -53,17 +60,22 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.4.3</version>
                 <configuration>
-                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                    <propertyFile>src/main/resources/liquibase.yaml</propertyFile>
                 </configuration>
 
                 <executions>
                     <execution>
                         <!--配置什么时候执行数据库变更日志中的SQL脚本-->
                         <phase>process-resources</phase>
+                        <configuration>
+                            <!--版本指定，也可在命令执行时指定-->
+                            <tag>${maven.build.timestamp}</tag>
+                        </configuration>
 
                         <goals>
                             <!--执行类型-->
                             <goal>update</goal>
+                            <goal>tag</goal>
                         </goals>
                     </execution>
                 </executions>

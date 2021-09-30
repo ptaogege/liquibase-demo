@@ -1,0 +1,55 @@
+Reference Database: root@localhost @ jdbc:mysql://localhost:3306/liquibase?serverTimezone=UTC (Default Schema: liquibase)
+Comparison Database: root@localhost @ jdbc:mysql://localhost:3306/liquibase_uat?serverTimezone=UTC (Default Schema: liquibase_uat)
+Compared Schemas: liquibase -> liquibase_uat
+Product Name: EQUAL
+Product Version: EQUAL
+Missing Catalog(s): NONE
+Unexpected Catalog(s): NONE
+Changed Catalog(s): NONE
+Missing Column(s): 
+     liquibase.databasechangelog.AUTHOR
+     liquibase.databasechangelog.COMMENTS
+     liquibase.databasechangelog.CONTEXTS
+     liquibase.databasechangelog.DATEEXECUTED
+     liquibase.databasechangelog.DEPLOYMENT_ID
+     liquibase.databasechangelog.DESCRIPTION
+     liquibase.databasechangelog.EXECTYPE
+     liquibase.databasechangelog.FILENAME
+     liquibase.databasechangelog.ID
+     liquibase.databasechangeloglock.ID
+     liquibase.databasechangelog.LABELS
+     liquibase.databasechangelog.LIQUIBASE
+     liquibase.databasechangeloglock.LOCKED
+     liquibase.databasechangeloglock.LOCKEDBY
+     liquibase.databasechangeloglock.LOCKGRANTED
+     liquibase.databasechangelog.MD5SUM
+     liquibase.databasechangelog.ORDEREXECUTED
+     liquibase.databasechangelog.TAG
+Unexpected Column(s): 
+     liquibase_uat.distributor.eee
+Changed Column(s): NONE
+Missing Foreign Key(s): NONE
+Unexpected Foreign Key(s): NONE
+Changed Foreign Key(s): NONE
+Missing Index(s): 
+     PRIMARY UNIQUE  ON liquibase.databasechangeloglock(ID)
+Unexpected Index(s): NONE
+Changed Index(s): NONE
+Missing Primary Key(s): 
+     PRIMARY on liquibase.databasechangeloglock(ID)
+Unexpected Primary Key(s): NONE
+Changed Primary Key(s): NONE
+Missing Sequence(s): NONE
+Unexpected Sequence(s): NONE
+Changed Sequence(s): NONE
+Missing Table(s): 
+     databasechangelog
+     databasechangeloglock
+Unexpected Table(s): NONE
+Changed Table(s): NONE
+Missing Unique Constraint(s): NONE
+Unexpected Unique Constraint(s): NONE
+Changed Unique Constraint(s): NONE
+Missing View(s): NONE
+Unexpected View(s): NONE
+Changed View(s): NONE

@@ -2,3 +2,7 @@ databaseChangeLog:
 
   - include:
       file: db_changelog/liquibase.mysql/changelog-202109-dml.xml
+  - include:
+      file: db_changelog/liquibase.mysql/changelog-202109-ddl.xml
+  #- include:
+      #file: db_changelog/changelog-test.xml

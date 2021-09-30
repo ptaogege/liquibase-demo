@@ -18,13 +18,19 @@
             <column name="active" type="boolean" defaultValue="1"/>
         </createTable>
     </changeSet>
-    <changeSet id="3" author="tao">
+    <changeSet id="2" author="tao">
         <dropColumn tableName="distributor" columnName="active"/>
     </changeSet>
-    <changeSet id="2" author="peng">
+    <changeSet id="3" author="peng">
         <addColumn tableName="distributor">
             <column name="tel"  type="varchar(255)" encoding="utf8" remarks="电话"/>
         </addColumn>
     </changeSet>
+
+    <!--<changeSet id="4" author="peng">
+        <addColumn tableName="changeRollback">
+            <column name="name"  type="varchar(30)" encoding="utf8"/>
+        </addColumn>
+    </changeSet>-->
 
 </databaseChangeLog>

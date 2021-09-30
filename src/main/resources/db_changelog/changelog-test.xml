@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+
+
+    <changeSet author="pengtao" id="1632633199">
+        <createTable tableName="student">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="username" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="age" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1817191723" author="penguin">
+        <addColumn tableName="student">
+            <column name="hobby" type="VARCHAR(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="123133132" author="penguin">
+        <insert tableName="student">
+            <column name="username" value="zhangsan"/>
+            <column name="age" value="23"/>
+            <column name="hobby" value="basketball"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
