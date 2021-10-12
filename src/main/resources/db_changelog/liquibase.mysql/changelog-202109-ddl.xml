@@ -27,6 +27,19 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="1001" author="penguin">
+        <createTable tableName="changeRollback">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pass" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
     <!--<changeSet id="4" author="peng">
         <addColumn tableName="changeRollback">
             <column name="name"  type="varchar(30)" encoding="utf8"/>

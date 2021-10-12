@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div style="margin-left: 500px;margin-top: 100px">
+    <form th:action="@{/diffChangeLog}" method="post">
+        <div>
+            <input type="text" id="diffChange" name="diffChange" class="form-control" placeholder="指定写入的文件" required="true">
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <button type="submit">获取数据库对比差异
+                </button>
+            </div>
+        </div>
+    </form><br>
+    <form th:action="@{/update}" method="post">
+        <div>
+            <input type="text" id="tag" name="tag" class="form-control" placeholder="请输入版本号" required="true">
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <button type="submit">升级
+                </button>
+            </div>
+        </div>
+    </form><br>
+    <form th:action="@{/GenerateChangeLog}" method="post">
+        <div>
+            <input type="text" id="outputChange" name="outputChange" class="form-control" placeholder="指定写入的文件" required="true">
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <button type="submit">全量获取数据库信息
+                </button>
+            </div>
+        </div>
+    </form><br>
+    <form th:action="@{/changeLogSync}" method="post">
+        <div>
+            <input type="text" id="changeLogSync" name="changeLogSync" class="form-control" placeholder="请输入要同步的版本号" required="true">
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <button type="submit">同步版本号
+                </button>
+            </div>
+        </div>
+    </form><br>
+    <form th:action="@{/rollback}" method="post">
+        <div class="row">
+            <div class="col-4">
+                <button type="submit">回滚
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

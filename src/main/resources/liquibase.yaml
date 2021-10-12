@@ -1,21 +1,21 @@
 changeLogFile: db_changelog/changelog-master.yaml
 diffChangeLogFile: src/main/resources/db_changelog/mydiff.xml
 
-migrationSqlOutputFile: src/main/resources/db_changelog/migrate.sql
+migrationSqlOutputFile: src/main/resources/db_changelog/migrate.mysql.sql
 
 outputChangeLog: db_changelog/liquibase.mysql/changelog-test.sql
 outputFile: src/main/resources/db_changelog/mydiff.txt
 diffTypes: tables,views,columns,indexes,foreignkeys,primarykeys,uniqueconstraints,data
 
 driver: com.mysql.cj.jdbc.Driver
-url: jdbc:mysql://localhost:3306/liquibase?serverTimezone=UTC
-username: root
-password: root
+targetUrl: jdbc:mysql://localhost:3306/liquibase_uat?serverTimezone=UTC
+targetUsername: root
+targetPassword: root
 
 outputChangeLogFile: src/main/resources/db_changelog/testGenerateChangeLog.xml
 generateUrl: jdbc:mysql://localhost:3306/course01?serverTimezone=UTC
 
-referenceUrl: jdbc:mysql://localhost:3306/liquibase_uat?serverTimezone=UTC
+referenceUrl: jdbc:mysql://localhost:3306/liquibase?serverTimezone=UTC
 referenceUsername: root
 referencePassword: root
 

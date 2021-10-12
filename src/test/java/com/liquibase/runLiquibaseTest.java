@@ -1,17 +1,25 @@
 package com.liquibase;
 
 import com.zaxxer.hikari.HikariDataSource;
+import liquibase.CatalogAndSchema;
 import liquibase.Contexts;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
+import liquibase.diff.DiffGeneratorFactory;
 import liquibase.diff.DiffResult;
 import liquibase.diff.compare.CompareControl;
 import liquibase.diff.output.DiffOutputControl;
 import liquibase.diff.output.changelog.DiffToChangeLog;
 import liquibase.exception.LiquibaseException;
+import liquibase.integration.commandline.CommandLineUtils;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import liquibase.serializer.ChangeLogSerializer;
+import liquibase.structure.DatabaseObject;
+import liquibase.structure.core.*;
+import org.apache.tools.ant.util.StringUtils;
+import org.assertj.core.internal.Diff;
 import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
@@ -33,7 +41,9 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 
 public class runLiquibaseTest {
@@ -67,16 +77,31 @@ public class runLiquibaseTest {
      */
     @Test
     public void testDiff() throws LiquibaseException, SQLException {
+        final Set<Class<? extends DatabaseObject>> compareTypes = new HashSet<>();
+        compareTypes.add(Column.class);
+        compareTypes.add(Data.class);
+        compareTypes.add(ForeignKey.class);
+        compareTypes.add(Index.class);
+        compareTypes.add(PrimaryKey.class);
+        compareTypes.add(Sequence.class);
+        compareTypes.add(Table.class);
+        compareTypes.add(UniqueConstraint.class);
+        compareTypes.add(View.class);
         String diffChangeLogFile = (String) yaml().get("diffChangeLogFile");
         Connection connection = DriverManager.getConnection((String) yaml().get("url"), (String) yaml().get("username"),(String) yaml().get("password"));
         Connection refConnection = DriverManager.getConnection((String) yaml().get("referenceUrl"), (String) yaml().get("referenceUsername"),(String) yaml().get("referencePassword"));
 
         try {
-            Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-            Database refDatabase = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(refConnection));
-            Liquibase liquibase = new Liquibase(changeLogFile, new ClassLoaderResourceAccessor(), database);
+            Database targetDatabase = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+            Database referenceDatabase = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(refConnection));
+            Liquibase liquibase = new Liquibase("", new ClassLoaderResourceAccessor(), referenceDatabase);
 
-            DiffResult diffResult = liquibase.diff(refDatabase,database,CompareControl.STANDARD);
+            /*CommandLineUtils.doDiff(referenceDatabase,targetDatabase,StringUtils.trimToNull((String) yaml().get("diffTypes")),null, new PrintStream("src/main/resources/db_changelog/mydiff.txt"));
+                CommandLineUtils.doDiffToChangeLog(diffChangeLogFile,referenceDatabase,targetDatabase,new DiffOutputControl(),null, StringUtils.trimToNull((String) yaml().get("diffTypes")));
+            System.out.println("diff差异已写入——>" + diffChangeLogFile);*/
+
+            DiffResult diffResult = liquibase.diff(referenceDatabase, targetDatabase, new CompareControl(compareTypes));
+
             //final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             final PrintStream printStream = new PrintStream(diffChangeLogFile);
             final DiffToChangeLog diffToChangeLog = new DiffToChangeLog(diffResult, new DiffOutputControl());
@@ -99,6 +124,16 @@ public class runLiquibaseTest {
      */
     @Test
     public void testGenerateChangeLog() throws SQLException {
+        final Set<Class<? extends DatabaseObject>> compareTypes = new HashSet<>();
+        compareTypes.add(Column.class);
+        compareTypes.add(Data.class);
+        compareTypes.add(ForeignKey.class);
+        compareTypes.add(Index.class);
+        compareTypes.add(PrimaryKey.class);
+        compareTypes.add(Sequence.class);
+        compareTypes.add(Table.class);
+        compareTypes.add(UniqueConstraint.class);
+        compareTypes.add(View.class);
 
         String outputChangeLogFile = (String) yaml().get("outputChangeLogFile");
         Connection connection = null;
@@ -107,10 +142,13 @@ public class runLiquibaseTest {
             Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
             Liquibase liquibase = new Liquibase(outputChangeLogFile, new ClassLoaderResourceAccessor(), database);
 
+            //CommandLineUtils.doGenerateChangeLog(outputChangeLogFile,database,null,StringUtils.trimToNull((String) yaml().get("diffTypes")),"penguin","",outputChangeLogFile,new DiffOutputControl());
+
             DiffToChangeLog diffToChangeLog = new DiffToChangeLog(new DiffOutputControl());
             //ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             PrintStream printStream = new PrintStream(outputChangeLogFile);
-            liquibase.generateChangeLog(database.getDefaultSchema(),diffToChangeLog,printStream);
+
+            liquibase.generateChangeLog(database.getDefaultSchema(), diffToChangeLog, printStream,compareTypes.toArray(new Class[compareTypes.size()]));
             System.out.println("********** GENERATED CHANGELOG START **********");
             diffToChangeLog.print(printStream);
             System.out.println("********** GENERATED CHANGELOG END **********");
@@ -129,6 +167,8 @@ public class runLiquibaseTest {
      * 更新、标签、回滚操作
      * @throws SQLException
      */
+    @Resource
+    private DataSource dataSource;
     @Test
     public void testUpdate() throws SQLException, ParseException {
 
@@ -139,6 +179,8 @@ public class runLiquibaseTest {
             connection = DriverManager.getConnection((String) yaml().get("url"), (String) yaml().get("username"), (String) yaml().get("password"));
             Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
             Liquibase liquibase = new Liquibase(changeLogFile, new ClassLoaderResourceAccessor(), database);
+            /*connection = dataSource.getConnection();
+            Liquibase liquibase = new Liquibase(changeLogFile, new ClassLoaderResourceAccessor(), new JdbcConnection(connection));*/
 
             //命令行输出日志
             /*StringWriter writer = new StringWriter();

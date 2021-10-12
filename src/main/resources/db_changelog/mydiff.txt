@@ -3,9 +3,6 @@ Comparison Database: root@localhost @ jdbc:mysql://localhost:3306/liquibase_uat?
 Compared Schemas: liquibase -> liquibase_uat
 Product Name: EQUAL
 Product Version: EQUAL
-Missing Catalog(s): NONE
-Unexpected Catalog(s): NONE
-Changed Catalog(s): NONE
 Missing Column(s): 
      liquibase.databasechangelog.AUTHOR
      liquibase.databasechangelog.COMMENTS
@@ -25,26 +22,42 @@ Missing Column(s):
      liquibase.databasechangelog.MD5SUM
      liquibase.databasechangelog.ORDEREXECUTED
      liquibase.databasechangelog.TAG
-Unexpected Column(s): 
-     liquibase_uat.distributor.eee
+     liquibase.distributor.address
+     liquibase.changerollback.id
+     liquibase.distributor.id
+     liquibase.changerollback.name
+     liquibase.distributor.name
+     liquibase.changerollback.pass
+     liquibase.distributor.tel
+Unexpected Column(s): NONE
 Changed Column(s): NONE
+Missing Data(s): 
+     changerollback
+     databasechangelog
+     databasechangeloglock
+     distributor
+Unexpected Data(s): NONE
+Changed Data(s): NONE
 Missing Foreign Key(s): NONE
 Unexpected Foreign Key(s): NONE
 Changed Foreign Key(s): NONE
 Missing Index(s): 
+     PRIMARY UNIQUE  ON liquibase.changerollback(id)
      PRIMARY UNIQUE  ON liquibase.databasechangeloglock(ID)
+     PRIMARY UNIQUE  ON liquibase.distributor(id)
 Unexpected Index(s): NONE
 Changed Index(s): NONE
 Missing Primary Key(s): 
+     PRIMARY on liquibase.changerollback(id)
      PRIMARY on liquibase.databasechangeloglock(ID)
+     PRIMARY on liquibase.distributor(id)
 Unexpected Primary Key(s): NONE
 Changed Primary Key(s): NONE
-Missing Sequence(s): NONE
-Unexpected Sequence(s): NONE
-Changed Sequence(s): NONE
 Missing Table(s): 
+     changerollback
      databasechangelog
      databasechangeloglock
+     distributor
 Unexpected Table(s): NONE
 Changed Table(s): NONE
 Missing Unique Constraint(s): NONE
