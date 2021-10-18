@@ -5,18 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<div style="margin-left: 500px;margin-top: 100px">
-    <form th:action="@{/diffChangeLog}" method="post">
-        <div>
-            <input type="text" id="diffChange" name="diffChange" class="form-control" placeholder="指定写入的文件" required="true">
-        </div>
-        <div class="row">
-            <div class="col-4">
-                <button type="submit">获取数据库对比差异
-                </button>
-            </div>
-        </div>
-    </form><br>
+<div style="margin-left: 800px;margin-right: 800px;margin-top: 100px;background: #b4e9d6">
     <form th:action="@{/update}" method="post">
         <div>
             <input type="text" id="tag" name="tag" class="form-control" placeholder="请输入版本号" required="true">
@@ -32,11 +21,8 @@
         <div>
             <input type="text" id="outputChange" name="outputChange" class="form-control" placeholder="指定写入的文件" required="true">
         </div>
-        <div class="row">
-            <div class="col-4">
-                <button type="submit">全量获取数据库信息
-                </button>
-            </div>
+        <div>
+            <button type="submit">全量获取数据库信息</button>
         </div>
     </form><br>
     <form th:action="@{/changeLogSync}" method="post">
@@ -53,7 +39,39 @@
     <form th:action="@{/rollback}" method="post">
         <div class="row">
             <div class="col-4">
-                <button type="submit">回滚
+                <button type="submit"> 回 滚
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div style="margin-left: 800px;margin-right: 800px;margin-top: 20px;background: aquamarine">
+    <form th:action="@{/diffChangeLog}" method="post">
+        <div>
+            <input type="text" id="diffChange" name="diffChange" class="form-control" placeholder="指定写入的文件" required="true">
+        </div><br>
+        <div>
+            <input type="text" id="referenceUrl" name="referenceUrl" class="form-control" placeholder="输入源数据库url" required="true">
+        </div><br>
+        <div>
+            <input type="text" id="referenceUsername" name="referenceUsername" class="form-control" placeholder="输入源数据库用户名" required="true">
+        </div><br>
+        <div>
+            <input type="password" id="referencePassword" name="referencePassword" class="form-control" placeholder="输入源数据库密码" required="true">
+        </div><br>
+        <div>
+            <input type="text" id="targetUrl" name="targetUrl" class="form-control" placeholder="输入目标数据库url" required="true">
+        </div><br>
+        <div>
+            <input type="text" id="targetUsername" name="targetUsername" class="form-control" placeholder="输入目标数据库用户名" required="true">
+        </div><br>
+        <div>
+            <input type="password" id="targetPassword" name="targetPassword" class="form-control" placeholder="输入目标数据库密码" required="true">
+        </div><br>
+        <div class="row">
+            <div class="col-4">
+                <button type="submit">获取数据库对比差异
                 </button>
             </div>
         </div>

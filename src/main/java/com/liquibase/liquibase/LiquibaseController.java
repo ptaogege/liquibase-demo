@@ -21,8 +21,14 @@ public class LiquibaseController {
 
     @RequestMapping("/diffChangeLog")
     @ResponseBody
-    public String diffChangeLog(@RequestParam("diffChange") String diffChange) throws SQLException {
-        liquibaseService.diffChangeLog(diffChange);
+    public String diffChangeLog(@RequestParam("diffChange") String diffChange,
+                                @RequestParam("referenceUrl") String referenceUrl,
+                                @RequestParam("referenceUsername") String referenceUsername,
+                                @RequestParam("referencePassword") String referencePassword,
+                                @RequestParam("targetUrl") String targetUrl,
+                                @RequestParam("targetUsername") String targetUsername,
+                                @RequestParam("targetPassword") String targetPassword) throws SQLException {
+        liquibaseService.diffChangeLog(diffChange,referenceUrl,referenceUsername,referencePassword,targetUrl,targetUsername,targetPassword);
         return "success";
     }
 
@@ -49,13 +55,10 @@ public class LiquibaseController {
     }
 
     @RequestMapping("/rollback")
-    public void rollback() throws SQLException {
+    @ResponseBody
+    public String rollback() throws SQLException {
         liquibaseService.rollback();
+        return "success";
     }
-
-
-
-
-
 
 }

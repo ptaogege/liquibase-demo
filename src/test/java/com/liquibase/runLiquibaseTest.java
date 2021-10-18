@@ -1,5 +1,6 @@
 package com.liquibase;
 
+import com.liquibase.liquibase.LiquibaseConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import liquibase.CatalogAndSchema;
 import liquibase.Contexts;
@@ -40,6 +41,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
@@ -77,43 +80,35 @@ public class runLiquibaseTest {
      */
     @Test
     public void testDiff() throws LiquibaseException, SQLException {
-        final Set<Class<? extends DatabaseObject>> compareTypes = new HashSet<>();
-        compareTypes.add(Column.class);
-        compareTypes.add(Data.class);
-        compareTypes.add(ForeignKey.class);
-        compareTypes.add(Index.class);
-        compareTypes.add(PrimaryKey.class);
-        compareTypes.add(Sequence.class);
-        compareTypes.add(Table.class);
-        compareTypes.add(UniqueConstraint.class);
-        compareTypes.add(View.class);
-        String diffChangeLogFile = (String) yaml().get("diffChangeLogFile");
-        Connection connection = DriverManager.getConnection((String) yaml().get("url"), (String) yaml().get("username"),(String) yaml().get("password"));
-        Connection refConnection = DriverManager.getConnection((String) yaml().get("referenceUrl"), (String) yaml().get("referenceUsername"),(String) yaml().get("referencePassword"));
 
+        String diffChangeLogFile = (String) yaml().get("diffChangeLogFile");
+
+        Connection tarConnection = DriverManager.getConnection((String) yaml().get("targetUrl"), (String) yaml().get("targetUsername"),(String) yaml().get("targetPassword"));
+        Connection refConnection = DriverManager.getConnection((String) yaml().get("referenceUrl"), (String) yaml().get("referenceUsername"),(String) yaml().get("referencePassword"));
         try {
-            Database targetDatabase = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+            Database targetDatabase = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(tarConnection));
             Database referenceDatabase = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(refConnection));
             Liquibase liquibase = new Liquibase("", new ClassLoaderResourceAccessor(), referenceDatabase);
 
-            /*CommandLineUtils.doDiff(referenceDatabase,targetDatabase,StringUtils.trimToNull((String) yaml().get("diffTypes")),null, new PrintStream("src/main/resources/db_changelog/mydiff.txt"));
-                CommandLineUtils.doDiffToChangeLog(diffChangeLogFile,referenceDatabase,targetDatabase,new DiffOutputControl(),null, StringUtils.trimToNull((String) yaml().get("diffTypes")));
-            System.out.println("diff差异已写入——>" + diffChangeLogFile);*/
+            CommandLineUtils.doDiff(referenceDatabase,targetDatabase,StringUtils.trimToNull((String) yaml().get("diffTypes")),null, new PrintStream("src/main/resources/db_changelog/mydiff.txt"));
+            CommandLineUtils.doDiffToChangeLog(diffChangeLogFile,referenceDatabase,targetDatabase,
+                    new DiffOutputControl().setIncludeSchema(false).setIncludeCatalog(false),null,
+                    StringUtils.trimToNull((String) yaml().get("diffTypes")));
+            System.out.println("diff差异已写入——>" + diffChangeLogFile);
 
-            DiffResult diffResult = liquibase.diff(referenceDatabase, targetDatabase, new CompareControl(compareTypes));
-
+            /*DiffResult diffResult = liquibase.diff(referenceDatabase, targetDatabase, new CompareControl());
             //final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             final PrintStream printStream = new PrintStream(diffChangeLogFile);
             final DiffToChangeLog diffToChangeLog = new DiffToChangeLog(diffResult, new DiffOutputControl());
             diffToChangeLog.print(printStream);
-            System.out.println("diff差异已写入——>" + diffChangeLogFile);
+            System.out.println("diff差异已写入——>" + diffChangeLogFile);*/
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (connection != null) {
-                connection.rollback();
-                connection.close();
+            if (refConnection != null) {
+                tarConnection.close();
+                refConnection.close();
             }
         }
     }
@@ -212,10 +207,7 @@ public class runLiquibaseTest {
     }
 
     @Test
-    public void rollback(Liquibase liquibase) throws FileNotFoundException, LiquibaseException {
-        PrintStream printStream = new PrintStream("");
-        StringWriter stringWriter = new StringWriter();
-        liquibase.futureRollbackSQL(stringWriter);
-        System.out.println(stringWriter.toString());
+    public void rollback() throws FileNotFoundException, LiquibaseException {
+
     }
 }

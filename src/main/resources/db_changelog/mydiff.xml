@@ -1,7 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
-
-    <changeSet author="PANSOFT (generated)" id="1634019086350-1">
+    <changeSet author="PANSOFT (generated)" id="1634110144759-1">
         <createTable tableName="changerollback">
             <column name="id" type="INT">
                 <constraints nullable="false" primaryKey="true"/>
@@ -14,7 +13,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="PANSOFT (generated)" id="1634019086350-2">
+    <changeSet author="PANSOFT (generated)" id="1634110144759-2">
         <createTable tableName="distributor">
             <column name="id" type="INT">
                 <constraints nullable="false" primaryKey="true"/>
@@ -26,64 +25,7 @@
             <column name="tel" remarks="电话" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="PANSOFT (generated)" id="1634019086350-3">
-        <insert tableName="distributor">
-            <column name="id" valueNumeric="1"/>
-            <column name="name" value="zhangsan"/>
-            <column name="address" value="北京"/>
-            <column name="tel" value="123123"/>
-        </insert>
-        <insert tableName="distributor">
-            <column name="id" valueNumeric="2"/>
-            <column name="name" value="lisi"/>
-            <column name="address" value="上海"/>
-            <column name="tel" value="123123"/>
-        </insert>
-        <insert tableName="distributor">
-            <column name="id" valueNumeric="3"/>
-            <column name="name" value="Pan"/>
-            <column name="address" value="山东济南"/>
-            <column name="tel" value="9988998"/>
-        </insert>
-        <insert tableName="distributor">
-            <column name="id" valueNumeric="4"/>
-            <column name="name" value="Soft"/>
-            <column name="address" value="山东青岛"/>
-            <column name="tel" value="9933428"/>
-        </insert>
-        <insert tableName="distributor">
-            <column name="id" valueNumeric="5"/>
-            <column name="name" value="niu"/>
-            <column name="address" value="山东枣庄"/>
-            <column name="tel" value="998998"/>
-        </insert>
-    </changeSet>
-    <changeSet author="PANSOFT (generated)" id="1634021099839-1">
-        <createTable tableName="changerollback">
-            <column name="id" type="INT">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="pass" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="PANSOFT (generated)" id="1634021099839-2">
-        <createTable tableName="distributor">
-            <column name="id" type="INT">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="address" type="VARCHAR(255)"/>
-            <column name="tel" remarks="电话" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="PANSOFT (generated)" id="1634021099839-3">
+    <changeSet author="PANSOFT (generated)" id="1634110144759-3">
         <insert tableName="distributor">
             <column name="id" valueNumeric="1"/>
             <column name="name" value="zhangsan"/>

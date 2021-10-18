@@ -20,11 +20,14 @@ import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -117,14 +120,17 @@ public class LiquibaseService {
      * 生成两数据库对比差异
      * @throws SQLException
      */
-    public void diffChangeLog(String diffChangeLogFile) throws SQLException {
+    public void diffChangeLog(String diffChangeLogFile, String referenceUrl, String referenceUsername, String referencePassword,
+                              String targetUrl, String targetUsername, String targetPassword) throws SQLException {
         String outputFile = (String) yaml().get("outputFile");
-        Connection tarConnection = DriverManager.getConnection((String) yaml().get("targetUrl"), (String) yaml().get("targetUsername"),(String) yaml().get("targetPassword"));
-        Connection refConnection = DriverManager.getConnection((String) yaml().get("referenceUrl"), (String) yaml().get("referenceUsername"),(String) yaml().get("referencePassword"));
+
+        Connection refConnection = DriverManager.getConnection(referenceUrl,referenceUsername,referencePassword);
+        Connection tarConnection = DriverManager.getConnection(targetUrl,targetUsername,targetPassword);
+
         try {
             Database targetDatabase = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(tarConnection));
             Database referenceDatabase = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(refConnection));
-            Liquibase liquibase = new Liquibase("", new ClassLoaderResourceAccessor(), targetDatabase);
+            Liquibase liquibase = new Liquibase("", new ClassLoaderResourceAccessor(), referenceDatabase);
 
             CommandLineUtils.doDiff(referenceDatabase, targetDatabase, StringUtils.trimToNull((String) yaml().get("diffTypes")), null, new PrintStream(outputFile));
             CommandLineUtils.doDiffToChangeLog(diffChangeLogFile, referenceDatabase, targetDatabase,
@@ -161,9 +167,9 @@ public class LiquibaseService {
             Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
             Liquibase liquibase = new Liquibase(changeLogFile, new ClassLoaderResourceAccessor(), database);
 
-            //liquibase.rollback("V2.0","");   //回滚
-            /*PrintStream printStream = new PrintStream("src/main/resources/db_changelog/test.xml");
-            liquibase.rollback("",new OutputStreamWriter());*/
+            liquibase.rollback("V2.0","");   //回滚
+            //PrintStream printStream = new PrintStream("src/main/resources/db_changelog/test.xml");
+            //liquibase.rollback(2,"");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -217,5 +223,25 @@ public class LiquibaseService {
             }
         }
         return null;
+    }
+
+    /**
+     * 数据库配置信息
+     * @param referenceUrl
+     * @param referenceUsername
+     * @param referencePassword
+     * @param targetUrl
+     * @param targetUsername
+     * @param targetPassword
+     */
+    public void config(String referenceUrl, String referenceUsername, String referencePassword, String targetUrl, String targetUsername, String targetPassword) {
+        LiquibaseConfig config = new LiquibaseConfig();
+        config.setReferenceUrl(referenceUrl);
+        config.setReferenceUsername(referenceUsername);
+        config.setReferencePassword(referencePassword);
+        config.setTargetUrl(targetUrl);
+        config.setTargetUsername(targetUsername);
+        config.setTargetPassword(targetPassword);
+
     }
 }
